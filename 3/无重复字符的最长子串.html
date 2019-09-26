@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>无重复字符的最长子串</title>
+</head>
+
+<body>
+  <script>
+    // 给定一个字符串,请你找出其中不含有重复字符的最长子串的长度
+    // 难度: 中等
+    // 思路:
+    // 1、container数组容器存放当前没有重复字符的子串
+    // 2、maxLength记录container数组的最大值
+    // 3、依次遍历每个字符，如果该字符已存在，就将该字符包括在这个字符前面的字符都删除;如果字符不存在,就将这个字符push进container
+    // 4、如果container的最大值有变化,就更新到maxLength
+    function lengthOfLongestSubstring(s) {
+      let container = [];
+      let maxLength = 0;
+      debugger;
+      for(let i = 0; i < s.length; i++) {
+        let index;
+        let isExist = false;
+        // 如果字符已经存在 记录该字符在原字符串中的位置
+        if(container.indexOf(s[i]) > -1) {
+          index = container.indexOf(s[i]);
+          isExist = true; // 为true表示字符已经存在
+        }
+        container.push(s[i]);
+        // 如果字符已经存在就把前面没用的删除
+        if(isExist) {
+          container = container.slice(index+1);
+        }
+        if(container.length > maxLength){
+          maxLength = container.length;
+        }
+      }
+      return maxLength;
+    }
+    let test = "pwwkewrttt";
+    console.log(lengthOfLongestSubstring(test));
+  </script>
+</body>
+
+</html>
