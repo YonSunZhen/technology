@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>盛最多水的容器</title>
+</head>
+<body>
+  <script>
+    function maxArea(heightArray) {
+      let height;
+      let maxArea = 0;
+      for(let i = 0; i < heightArray.length; i++) {
+        const heightLeft = heightArray[i];
+        for(let j = i + 1; j < heightArray.length; j++) {
+          const rightLeft = heightArray[j];
+          // 以最低的那个为准
+          height = heightLeft > rightLeft ? rightLeft : heightLeft;
+          const width = j - i;
+          const _maxArea =  width * height;
+          maxArea = _maxArea > maxArea ? _maxArea : maxArea;
+        }
+      }
+      return maxArea;
+    }
+    let test = [1,8,6,2,5,4,8,3,7];
+    console.log(maxArea(test));
+  </script>
+</body>
+</html>
