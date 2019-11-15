@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>整数转罗马数字</title>
+</head>
+<body>
+  <script>
+    // 整数转罗马数字
+    // 将当前数字与当前最大单位作比较,每次转换完就减去已转换的数字,再比较...直到当前数字等于0
+    // 重点: 罗马数字是从大到小排列,主要要将所有节点列出来
+    function intToRoman(num) {
+      const romanObj = {
+        '1': 'I',
+        '4': 'IV',
+        '5': 'V',
+        '9': 'IX',
+        '10': 'X',
+        '40': 'XL',
+        '50': 'L',
+        '90': 'XC',
+        '100': 'C',
+        '400': 'CD',
+        '500': 'D',
+        '900': 'CM',
+        '1000': 'M'
+      };
+      let result = '';
+      let index = 0;
+      const romanArr = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];    
+      while(num > 0) {
+        let _num = num/romanArr[index]; // 4/1000=0.004
+        //_num大于等于1才说明超过了某个数
+        while(_num >= 1){
+          result += romanObj[String(romanArr[index])];
+          _num--;
+        }
+        // 取余 前面计算了的减去 技巧
+        num = num % romanArr[index];
+        index++;
+      }
+      return result;
+    }
+    const test = 888;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+    console.log(intToRoman(test));
+  </script>
+</body>
+</html>
