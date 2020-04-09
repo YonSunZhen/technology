@@ -38,7 +38,8 @@ Demo.prototype.then = function (onFulfilled, onRejected) {
     let promise2 = new Demo((resolve, reject) => {
       setTimeout(() => {
         let x = onFulfilled(that.value);
-        if (x) {
+        // 必须这样判断 跟直接返回一个数据(return xx)区分
+        if (x && typeof x === 'object' || typeof x === 'function') {
           // 如果then存在 说明返回了一个promise 所以要等返回的promise resolve之后 这边才可以resolve 
           // 所以这里采用的方法是将resolve放在返回的promise的then里面执行 这样前面的resolve肯定就在最后面执行了 很牛皮 
           let then = x.then;
@@ -47,7 +48,7 @@ Demo.prototype.then = function (onFulfilled, onRejected) {
             then.call(x, resolve, reject);
           }
         } else {
-          resolve();
+          resolve(x);
         }
       })
     })
@@ -66,7 +67,7 @@ Demo.prototype.then = function (onFulfilled, onRejected) {
           // 没有返回值 直接执行resolve(...)
           // 有返回值
           let x = onFulfilled(that.value);
-          if (x) {
+          if (x && typeof x === 'object' || typeof x === 'function') {
             // console.log('这里是调试3');
             // 如果then存在 说明返回了一个promise 所以要等返回的promise resolve之后 这边才可以resolve 
             // 所以这里采用的方法是将resolve放在返回的promise的then里面执行 这样前面的resolve肯定就在最后面执行了 很牛皮
@@ -78,7 +79,7 @@ Demo.prototype.then = function (onFulfilled, onRejected) {
             }
           } else {
             // console.log('这里是调试4');
-            resolve();
+            resolve(x);
           }
 
           // 执行了resolve才会将状态改变 接着才能进入到下一个then回调里面
@@ -193,50 +194,50 @@ function resolvePromise (promise2, x, resolve, reject) {
 // 这里是调试2
 // 33
 
-const promise = new Demo((resolve, reject) => {
-  setTimeout(() => {
-    console.log('这里是调试1'); // 1
-    resolve(33);
-  }, 2000)
-})
-promise.then((data) => {
-  const haha = new Demo((resolve) => {
+// const promise = new Demo((resolve, reject) => {
+//   setTimeout(() => {
+//     console.log('这里是调试1'); // 1
+//     resolve(33);
+//   }, 2000)
+// })
+// promise.then((data) => {
+//   const haha = new Demo((resolve) => {
 
-    setTimeout(() => {
-      console.log('这里是调试2'); // 2
-      console.log(data); // 3
-      resolve()
-      // return 44;
-    }, 1500);
-  })
-  // 这里为什么是在最后面输出来
-  const h2 = haha.then(() => {
-    return new Demo((resolve, reject) => {
-      setTimeout(() => {
-        console.log('这里是调试22');
-        resolve();
-      }, 3000)
-    })
-  })
-  h2.then(() => {
-    return new Demo(r => {
-      setTimeout(() => {
-        console.log('这里是调试222');
-        r(1)
-      }, 1000);
-    })
-  })
-  return h2;
+//     setTimeout(() => {
+//       console.log('这里是调试2'); // 2
+//       console.log(data); // 3
+//       resolve()
+//       // return 44;
+//     }, 1500);
+//   })
+//   // 这里为什么是在最后面输出来
+//   const h2 = haha.then(() => {
+//     return new Demo((resolve, reject) => {
+//       setTimeout(() => {
+//         console.log('这里是调试22');
+//         resolve();
+//       }, 3000)
+//     })
+//   })
+//   h2.then(() => {
+//     return new Demo(r => {
+//       setTimeout(() => {
+//         console.log('这里是调试222');
+//         r(1)
+//       }, 1000);
+//     })
+//   })
+//   return h2;
 
-}).then(() => {
-  const haha1 = new Demo((resolve) => {
+// }).then(() => {
+//   const haha1 = new Demo((resolve) => {
 
-    setTimeout(() => {
-      console.log('这里是调试3');
-      resolve();
-    }, 1000)
-  })
-  return haha1;
-}).then(() => {
-  console.log('这里是调试4'); // 2
-})
+//     setTimeout(() => {
+//       console.log('这里是调试3');
+//       resolve();
+//     }, 1000)
+//   })
+//   return haha1;
+// }).then(() => {
+//   console.log('这里是调试4'); // 2
+// })
