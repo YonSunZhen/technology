@@ -48,6 +48,7 @@ Demo.prototype.then = function (onFulfilled, onRejected) {
             then.call(x, resolve, reject);
           }
         } else {
+          // 如果进入这里的话 x为then里面return的数据，但没有return时为undefined
           resolve(x);
         }
       })
