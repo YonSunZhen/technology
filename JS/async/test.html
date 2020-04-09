@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    var b = 11;
+    function foo() {
+      let a = 2;
+      function bar() {
+        console.log(b);
+        console.log(a);
+        a++;
+      }
+      return bar;
+    }
+    let baz = foo();
+    baz(); // 2
+    baz(); // 3 
+    console.log('debug6');
+
+
+    // var x = 4
+    // var test
+    // function test_scope() {
+    //   var name = 'foo'
+    //   console.log(name)
+    //   console.log(type)
+    //   console.log(test)
+    //   var type = 'function'
+    //   test = 1
+    //   console.log(x)
+    // }
+    // test_scope()  
+  </script>
+</body>
+
+</html>

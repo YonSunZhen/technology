@@ -14,19 +14,34 @@
 // console.log(x);
 // it.next();
 
-function *foo() {
-  let x = yield 2;
-  z++;
-  let y = yield (x * z);
-  console.log(x, y, z);
+// function *foo() {
+//   let x = yield 2;
+//   z++;
+//   let y = yield (x * z);
+//   console.log(x, y, z);
+// }
+// let z = 1;
+// // 多个迭代器
+// let it1 = foo();
+// let it2 = foo();
+// let val1 = it1.next().value;
+// let val2 = it2.next().value;
+// val1 = it1.next(val2 * 10).value;
+// val2 = it2.next(val1 * 5).value;
+// it1.next(val2/2);
+// it2.next(val1/4);
+
+function getAjaxData (cb) {
+  // 用setTimeout实现异步请求
+  setTimeout(function () {
+    // 假设data是我们请求得到的数据 我们需要将数据发送给别人
+    const data = "请求得到的数据";
+    cb(data);
+    cb(data);
+  }, 1000)
 }
-let z = 1;
-// 多个迭代器
-let it1 = foo();
-let it2 = foo();
-let val1 = it1.next().value;
-let val2 = it2.next().value;
-val1 = it1.next(val2 * 10).value;
-val2 = it2.next(val1 * 5).value;
-it1.next(val2/2);
-it2.next(val1/4);
+// 获取ajax请求的响应数据并对数据进行处理
+getAjaxData(function handleData (tempData) {
+  tempData = tempData + '666';
+  console.log(tempData); // 请求得到的数据666
+});

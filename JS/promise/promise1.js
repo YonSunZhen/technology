@@ -1,13 +1,13 @@
 const PENDING = 'pending';
 const FULFILLED = 'fulfilled';
 const REJECTED = 'rejected';
-function Promise1(executor) {
+function Promise1 (executor) {
     let self = this;
     self.status = PENDING;
     self.onFulfilled = [];//成功的回调
     self.onRejected = []; //失败的回调
     //PromiseA+ 2.1
-    function resolve(value) {
+    function resolve (value) {
         if (self.status === PENDING) {
             self.status = FULFILLED;
             self.value = value;
@@ -15,7 +15,7 @@ function Promise1(executor) {
         }
     }
 
-    function reject(reason) {
+    function reject (reason) {
         if (self.status === PENDING) {
             self.status = REJECTED;
             self.reason = reason;
@@ -40,16 +40,18 @@ Promise1.prototype.then = function (onFulfilled, onRejected) {
         if (self.status === FULFILLED) {
             //PromiseA+ 2.2.2
             //PromiseA+ 2.2.4 --- setTimeout
+            // console.log('这里是调试1');
+            // 这里加setTimeout是保证promise2已经初始化完毕了
             setTimeout(() => {
                 try {
                     //PromiseA+ 2.2.7.1
                     let x = onFulfilled(self.value);
-                    console.log('debug4');
-                    console.log(x);
+                    // console.log('debug4');
+                    // console.log(x);
                     resolvePromise(promise2, x, resolve, reject);
                 } catch (e) {
-                  console.log(e);
-                  
+                    console.log(e);
+
                     //PromiseA+ 2.2.7.2
                     reject(e);
                 }
@@ -90,14 +92,14 @@ Promise1.prototype.then = function (onFulfilled, onRejected) {
     return promise2;
 }
 
-function resolvePromise(promise2, x, resolve, reject) {
+function resolvePromise (promise2, x, resolve, reject) {
     let self = this;
     //PromiseA+ 2.3.1
     if (promise2 === x) {
         reject(new TypeError('Chaining cycle'));
     }
     if (x && typeof x === 'object' || typeof x === 'function') {
-        console.log('debug5');
+        // console.log('debug5');
         let used; //PromiseA+2.3.3.3.3 只能调用一次
         try {
             let then = x.then;
@@ -115,7 +117,7 @@ function resolvePromise(promise2, x, resolve, reject) {
                     reject(r);
                 });
 
-            }else{
+            } else {
                 //PromiseA+2.3.3.4
                 if (used) return;
                 used = true;
@@ -128,8 +130,9 @@ function resolvePromise(promise2, x, resolve, reject) {
             reject(e);
         }
     } else {
-        console.log('debug6');
+        // console.log('debug6');
         //PromiseA+ 2.3.3.4
+        // console.log('666');
         resolve(x);
     }
 }
