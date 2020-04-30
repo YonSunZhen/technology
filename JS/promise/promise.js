@@ -23,6 +23,7 @@ function MyPromise (executor) {
     if (self.status === pending) {
       self.status = rejected;
       self.reason = reason;
+      
     }
   }
 
