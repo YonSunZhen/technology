@@ -1,4 +1,4 @@
-function myForEach(arr, callback) {
+async function myForEach(arr, callback) {
   let T, k;
   if(arr === null) {
     throw new TypeError('this is null or not defined');
@@ -27,16 +27,12 @@ function myForEach(arr, callback) {
       // kValue, k, O 对应着forEach回调函数3个参数, 数组当前项的值 数组当前项的索引 数组对象本身
       // call：将callbak的this指向其自己的内部
       console.log('这里是调试3');
-      callback.call(T, kValue, k, O);
+      await callback.call(T, kValue, k, O);
     }
     k++;
   }
   return undefined;
 }
-// const test = [1,2,,3];
-// myForEach(test, (item) => {
-//   console.log(item); // 1 2 3
-// })
 
 const test = [1,2,,3];
 function getData() {
@@ -52,6 +48,8 @@ myForEach(test, async (item) => {
   console.log('这里是调试2');
   console.log(data);
 })
+
+
 
 const test = [1,2,3];
 test.forEach(element => {
