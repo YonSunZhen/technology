@@ -19,14 +19,25 @@ function mySplice(arr, start, deleteCount, ...item) {
   // a：Let from be ToString(actualStart+k).
   // b: Let fromPresent be the result of calling the [[HasProperty]] internal method of O with argument from.
   // c: If fromPresent is true, then
-  // i: Let fromValue be the result of calling the [[Get]] internal method of O with argument from.
-  // ii: Call the [[DefineOwnProperty]] internal method of A with arguments ToString(k), Property Descriptor {[[Value]]: fromValue, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: true}, and false. 为什么要用这种 与普通的push有什么区别
+  //  i: Let fromValue be the result of calling the [[Get]] internal method of O with argument from.
+  //  ii: Call the [[DefineOwnProperty]] internal method of A with arguments ToString(k), Property Descriptor {[[Value]]: fromValue, [[Writable]]: true, [[Enumerable]]: true, [[Configurable]]: true}, and false. 为什么要用这种 与普通的push有什么区别
   // d: Increment k by 1.
+  // 获取删除的数组
   while(k < actualDeleteCount) {
     const from = String(actualStart + k);
-    if(from in O) {
-      const fromValue = O[Number(from)];
-      A.push(fromValue);
+    // if(from in O) {
+    //   const fromValue = O[Number(from)];
+    //   A.push(fromValue);
+    // }
+    const fromPresent = O.hasOwnProperty(from);
+    if(fromPresent) {
+      const fromValue = O[from];
+      Object.defineProperty(A, k, {
+        Writable: true,
+        Enumerable: true,
+        Configurable: true,
+        value: fromValue
+      })
     }
     k++;
   }
@@ -36,9 +47,99 @@ function mySplice(arr, start, deleteCount, ...item) {
   if(item.length > 0) {
     items = item;
   }
+  
   // 11、Let itemCount be the number of elements in items.
   const itemCount  = items.length;
   // 12、If itemCount < actualDeleteCount, then
-
+  // a: Let k be actualStart.
+  // b: Repeat, while k < (len – actualDeleteCount)
+  //  i: Let from be ToString(k+actualDeleteCount).
+  //  ii: Let to be ToString(k+itemCount).
+  //  iii: Let fromPresent be the result of calling the [[HasProperty]] internal method of O with argument from. 将from作为参数传递给0的内建方法[[HasProperty]] 结果赋值给fromPresent
+  //  iv: If fromPresent is true, then
+  //    1、 Let fromValue be the result of calling the [[Get]] internal method of O with argument from.
+  //    2、 Call the [[Put]] internal method of O with arguments to, fromValue, and true.
+  //  v:  Else, fromPresent is false
+  //    1、 Call the [[Delete]] internal method of O with arguments to and true.
+  //  vi: Increase k by 1.
+  // c: Let k be len.
+  // d: Repeat, while k > (len – actualDeleteCount + itemCount)
+  //  i: Call the [[Delete]] internal method of O with arguments ToString(k–1) and true. 调用O内建的方法[[Delete]]来删除k-1位置上的元素
+  //  ii: Decrease k by 1.
+  // 添加的个数小于删除的个数 为什么要这么分？
+  if(itemCount < actualDeleteCount) {
+    let k = actualStart;
+    while(k < (len - actualDeleteCount)) {
+      const from = String(k + actualDeleteCount);
+      const to = String(k + itemCount);
+      const fromPresent = O.hasOwnProperty(from);
+      if(fromPresent) {
+        const fromValue = O[from];
+        O[to] = fromValue;
+      } else {
+        // delete方法将某个位置上的值置为undefined
+        delete O[to];
+      }
+      k++;
+    }
+    k = len;
+    while(k > (len - actualDeleteCount + itemCount)) {
+      delete O[String(k-1)];
+      k--;
+    }
+  }
   // 13、Else if itemCount > actualDeleteCount, then
+  // a: Let k be (len – actualDeleteCount).
+  // b: Repeat, while k > actualStart
+  //  i: Let from be ToString(k + actualDeleteCount – 1).
+  //  ii: Let to be ToString(k + itemCount – 1)
+  //  iii: Let fromPresent be the result of calling the [[HasProperty]] internal method of O with argument from.
+  //  iv: If fromPresent is true, then
+  //    1、Let fromValue be the result of calling the [[Get]] internal method of O with argument from.
+  //    2、Call the [[Put]] internal method of O with arguments to, fromValue, and true.
+  //  v: Else, fromPresent is false
+  //    1、Call the [[Delete]] internal method of O with argument to and true.
+  //  vi: Decrease k by 1.
+  // 添加的个数大于删除的个数 为什么要这么分？
+  if(itemCount > actualDeleteCount) {
+    let k = len - actualDeleteCount;
+    while(k > actualStart) {
+      const from = String(k + actualDeleteCount - 1);
+      const to = String(k + itemCount - 1);
+      const fromPresent = O.hasOwnProperty(from);
+      if(fromPresent) {
+        const fromValue = O[from];
+        O[to] = fromValue;
+      } else {
+        delete O[to];
+      }
+      k--;
+    }
+  }
+  // 14、Let k be actualStart.
+  let i = actualStart;
+  // 15、Repeat, while items is not empty
+  // a: Remove the first element from items and let E be the value of that element.
+  // b: Call the [[Put]] internal method of O with arguments ToString(k), E, and true.
+  // c: Increase k by 1.
+  // 按队列顺序插入数据 
+  while(items.length > 0) {
+    const E = items.shift();
+    O[String(k)] = E;
+    i++;
+  }
+  // 16、Call the [[Put]] internal method of O with arguments "length", (len – actualDeleteCount + itemCount), and true.
+  O['length'] = len - actualDeleteCount + itemCount;
+  // 17、Return A.
+  return A;
 }
+
+const testArr = [1,3,5,7];
+const haha = mySplice(testArr, 2, 2, 33, 44);
+console.log(testArr);
+// console.log(haha);
+
+
+// const testArr = [1,3,5,7];
+// testArr.splice(2,1,33);
+// console.log(testArr);
