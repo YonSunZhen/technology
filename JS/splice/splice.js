@@ -1,3 +1,6 @@
+// 思路：
+// 需要删除时：没有删除的元素往后移
+// 添加的元素在最后一次加入
 function mySplice(arr, start, deleteCount, ...item) {
   // 1、Let O be the result of calling ToObject passing the this value as the argument.
   const O = arr;
@@ -69,6 +72,7 @@ function mySplice(arr, start, deleteCount, ...item) {
   // 添加的个数小于删除的个数 为什么要这么分？
   if(itemCount < actualDeleteCount) {
     let k = actualStart;
+    // 表示没有全部删除
     while(k < (len - actualDeleteCount)) {
       const from = String(k + actualDeleteCount);
       const to = String(k + itemCount);
@@ -121,11 +125,11 @@ function mySplice(arr, start, deleteCount, ...item) {
   // 15、Repeat, while items is not empty
   // a: Remove the first element from items and let E be the value of that element.
   // b: Call the [[Put]] internal method of O with arguments ToString(k), E, and true.
-  // c: Increase k by 1.
-  // 按队列顺序插入数据 
+  // c: Increase k by 1.g
+  // 按队列顺序插入数据
   while(items.length > 0) {
     const E = items.shift();
-    O[String(k)] = E;
+    O[String(i)] = E;
     i++;
   }
   // 16、Call the [[Put]] internal method of O with arguments "length", (len – actualDeleteCount + itemCount), and true.
@@ -135,11 +139,11 @@ function mySplice(arr, start, deleteCount, ...item) {
 }
 
 const testArr = [1,3,5,7];
-const haha = mySplice(testArr, 2, 2, 33, 44);
-console.log(testArr);
+const haha = mySplice(testArr, 0, 1, 33, 44, 55);
+// console.log(testArr);
 // console.log(haha);
 
 
 // const testArr = [1,3,5,7];
-// testArr.splice(2,1,33);
+// testArr.splice(1, 1, 33, 44, 55);
 // console.log(testArr);
