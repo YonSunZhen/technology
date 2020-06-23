@@ -1,7 +1,8 @@
 // 思路：
-// 需要删除时：没有删除的元素往后移
+// 需要删除元素时：没有删除的元素往后移
 // 添加的元素在最后一次加入
 function mySplice(arr, start, deleteCount, ...item) {
+  console.log(arr);
   // 1、Let O be the result of calling ToObject passing the this value as the argument.
   const O = arr;
   // 2、Let A be a new array created as if by the expression new Array()where Array is the standard built-in constructor with that name.
@@ -69,10 +70,9 @@ function mySplice(arr, start, deleteCount, ...item) {
   // d: Repeat, while k > (len – actualDeleteCount + itemCount)
   //  i: Call the [[Delete]] internal method of O with arguments ToString(k–1) and true. 调用O内建的方法[[Delete]]来删除k-1位置上的元素
   //  ii: Decrease k by 1.
-  // 添加的个数小于删除的个数 为什么要这么分？
+  // 添加的个数小于删除的个数 为什么要这么分？ 这时候原有的元素要往左移
   if(itemCount < actualDeleteCount) {
     let k = actualStart;
-    // 表示没有全部删除
     while(k < (len - actualDeleteCount)) {
       const from = String(k + actualDeleteCount);
       const to = String(k + itemCount);
@@ -80,17 +80,14 @@ function mySplice(arr, start, deleteCount, ...item) {
       if(fromPresent) {
         const fromValue = O[from];
         O[to] = fromValue;
+        delete O[from];
       } else {
         // delete方法将某个位置上的值置为undefined
         delete O[to];
       }
       k++;
     }
-    k = len;
-    while(k > (len - actualDeleteCount + itemCount)) {
-      delete O[String(k-1)];
-      k--;
-    }
+
   }
   // 13、Else if itemCount > actualDeleteCount, then
   // a: Let k be (len – actualDeleteCount).
@@ -104,22 +101,25 @@ function mySplice(arr, start, deleteCount, ...item) {
   //  v: Else, fromPresent is false
   //    1、Call the [[Delete]] internal method of O with argument to and true.
   //  vi: Decrease k by 1.
-  // 添加的个数大于删除的个数 为什么要这么分？
+  // 添加的个数大于删除的个数 为什么要这么分？ 这时候原有的元素要往右移
   if(itemCount > actualDeleteCount) {
-    let k = len - actualDeleteCount;
-    while(k > actualStart) {
-      const from = String(k + actualDeleteCount - 1);
-      const to = String(k + itemCount - 1);
-      const fromPresent = O.hasOwnProperty(from);
-      if(fromPresent) {
-        const fromValue = O[from];
-        O[to] = fromValue;
-      } else {
-        delete O[to];
-      }
-      k--;
-    }
+    // let k = len - actualDeleteCount;
+    // while(k > actualStart) {
+    //   const from = String(k + actualDeleteCount - 1);
+    //   const to = String(k + itemCount - 1);
+    //   const fromPresent = O.hasOwnProperty(from);
+    //   if(fromPresent) {
+    //     const fromValue = O[from];
+    //     O[to] = fromValue;
+    //   } else {
+    //     delete O[to];
+    //   }
+    //   k--;
+    // }
   }
+  console.log('这里是调试1');
+  console.log(arr);
+  
   // 14、Let k be actualStart.
   let i = actualStart;
   // 15、Repeat, while items is not empty
@@ -137,11 +137,19 @@ function mySplice(arr, start, deleteCount, ...item) {
   // 17、Return A.
   return A;
 }
-
+console.log('添加的个数大于删除的个数');
 const testArr = [1,3,5,7];
-const haha = mySplice(testArr, 0, 1, 33, 44, 55);
+const haha = mySplice(testArr, 0, 1, 33, 44, 55, 66, 77);
 // console.log(testArr);
 // console.log(haha);
+
+console.log('添加的个数小于删除的个数');
+const testArr1 = [1,3,5,7];
+const haha1 = mySplice(testArr1, 0, 3, 33, 44);
+console.log('这里是调试2');
+console.log(testArr1);
+// console.log(haha1);
+
 
 
 // const testArr = [1,3,5,7];
