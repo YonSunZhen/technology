@@ -116,6 +116,17 @@ function mySplice(arr, start, deleteCount, ...item) {
     //   }
     //   k--;
     // }
+    
+    const num = len - actualStart - actualDeleteCount;
+    for(let i = 0; i < num; i++) {
+      const from = actualStart + actualDeleteCount + i;
+      const to = actualStart + itemCount + i;
+      const fromPresent = O.hasOwnProperty(from);
+      if(fromPresent) {
+        const fromValue = O[from];
+        O[to] = fromValue;
+      }
+    }
   }
   console.log('这里是调试1');
   console.log(arr);
@@ -140,7 +151,8 @@ function mySplice(arr, start, deleteCount, ...item) {
 console.log('添加的个数大于删除的个数');
 const testArr = [1,3,5,7];
 const haha = mySplice(testArr, 0, 1, 33, 44, 55, 66, 77);
-// console.log(testArr);
+console.log('这里是调试3');
+console.log(testArr);
 // console.log(haha);
 
 console.log('添加的个数小于删除的个数');
