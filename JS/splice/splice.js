@@ -102,35 +102,32 @@ function mySplice(arr, start, deleteCount, ...item) {
   //    1、Call the [[Delete]] internal method of O with argument to and true.
   //  vi: Decrease k by 1.
   // 添加的个数大于删除的个数 为什么要这么分？ 这时候原有的元素要往右移
+  // 移动元素时必须从数组最后一个开始移动 这样不会干扰到别的元素的移动
   if(itemCount > actualDeleteCount) {
-    // let k = len - actualDeleteCount;
-    // while(k > actualStart) {
-    //   const from = String(k + actualDeleteCount - 1);
-    //   const to = String(k + itemCount - 1);
-    //   const fromPresent = O.hasOwnProperty(from);
-    //   if(fromPresent) {
-    //     const fromValue = O[from];
-    //     O[to] = fromValue;
-    //   } else {
-    //     delete O[to];
-    //   }
-    //   k--;
-    // }
-    
-    const num = len - actualStart - actualDeleteCount;
-    for(let i = 0; i < num; i++) {
-      const from = actualStart + actualDeleteCount + i;
-      const to = actualStart + itemCount + i;
+    let k = len - actualDeleteCount;
+    while(k > actualStart) {
+      const from = String(k + actualDeleteCount - 1);
+      const to = String(k + itemCount - 1);
       const fromPresent = O.hasOwnProperty(from);
       if(fromPresent) {
         const fromValue = O[from];
         O[to] = fromValue;
+      } else {
+        delete O[to];
       }
+      k--;
     }
+    // const num = len - actualStart - actualDeleteCount;
+    // for(let i = 0; i < num; i++) {
+    //   const from = len - 1 - i;
+    //   const to = len + (itemCount - actualDeleteCount) - 1 - i;
+    //   const fromPresent = O.hasOwnProperty(from); 
+    //   if(fromPresent) {
+    //     const fromValue = O[from];
+    //     O[to] = fromValue;
+    //   }
+    // }
   }
-  console.log('这里是调试1');
-  console.log(arr);
-  
   // 14、Let k be actualStart.
   let i = actualStart;
   // 15、Repeat, while items is not empty
@@ -148,22 +145,23 @@ function mySplice(arr, start, deleteCount, ...item) {
   // 17、Return A.
   return A;
 }
+
 console.log('添加的个数大于删除的个数');
 const testArr = [1,3,5,7];
-const haha = mySplice(testArr, 0, 1, 33, 44, 55, 66, 77);
+const haha = mySplice(testArr, 4, 0, 33, 44, 55, 66);
 console.log('这里是调试3');
 console.log(testArr);
 // console.log(haha);
 
-console.log('添加的个数小于删除的个数');
-const testArr1 = [1,3,5,7];
-const haha1 = mySplice(testArr1, 0, 3, 33, 44);
-console.log('这里是调试2');
-console.log(testArr1);
+// console.log('添加的个数小于删除的个数');
+// const testArr1 = [1,3,5,7];
+// const haha1 = mySplice(testArr1, 0, 3, 33, 44);
+// console.log('这里是调试2');
+// console.log(testArr1);
 // console.log(haha1);
 
 
 
 // const testArr = [1,3,5,7];
-// testArr.splice(1, 1, 33, 44, 55);
+// testArr.splice(0, 0, 33);
 // console.log(testArr);
