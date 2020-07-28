@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES5",
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "dom",
+      "es5",
+      "es6",
+      "es7",
+      "es2018",
+      "es2015.promise"
+    ]
+  },
+  "include": [
+    "./src/app/*"
+  ],
+  "exclude": [
+    "./node_modules",
+    "**/*.spec.ts"
+  ]
+}
