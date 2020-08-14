@@ -1,51 +1,79 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+// class Somebody {
+//   speed: number = 10;
+//   name: string;
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var Somebody = /** @class */ (function () {
-    function Somebody(name) {
-        this.speed = 10;
-        this.name = name;
-    }
-    Somebody.prototype.hit = function (rival) {
-        var hitDamage = 10;
-        console.log(this.name + "\u5BF9" + rival.name + "\u9020\u6210\u4E00\u6B21\u4F24\u5BB3\uFF1A" + hitDamage);
-    };
-    return Somebody;
-}());
-function cheating(target) {
-    target.prototype.hit = function (rival) {
-        var hitDamage = 100;
-        console.log(this.name + "\u5BF9" + rival.name + "\u9020\u6210\u4E00\u6B21\u4F24\u5BB3: " + hitDamage);
+//   constructor(name: string) {
+//     this.name = name;
+//   }
+//   hit(rival: Somebody) {
+//     const hitDamage: number = 10;
+//     console.log(`${this.name}对${rival.name}造成一次伤害：${hitDamage}`);
+//   }
+// }
+// function cheating(target: any) {
+//   target.prototype.hit = function(rival: Somebody) {
+//     const hitDamage: number = 100;
+//     console.log(`${this.name}对${rival.name}造成一次伤害: ${hitDamage}`);
+//   }
+// }
+// @cheating
+// class SBody extends Somebody{
+// }
+// const s0 = new Somebody('小红0');
+// const s1 = new SBody('小红1');
+// const rival = new Somebody('小明');
+// s0.hit(rival);
+// s1.hit(rival);
+// function autoLog (func) {
+//   return function () {
+//     console.log(`start ${func.name}`)
+//     func()
+//     console.log(`end ${func.name}`)
+//   }
+// }
+// function doSomething1 () {
+//   console.log('这里是调试1');
+// }
+// function doSomething2 () {
+//   console.log('这里是调试2');
+// }
+// autoLog(doSomething1)();
+function autoLog(target, propertyKey, descriptor) {
+    var oldValue = descriptor.value;
+    descriptor.value = function () {
+        var rest = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            rest[_i] = arguments[_i];
+        }
+        // console.log(`start ${func.name}`)
+        // 执行原方法
+        oldValue.apply(this, rest);
+        // console.log(`end ${func.name}`)
     };
 }
-var SBody = /** @class */ (function (_super) {
-    __extends(SBody, _super);
-    function SBody() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var haha = /** @class */ (function () {
+    function haha() {
     }
-    SBody = __decorate([
-        cheating
-    ], SBody);
-    return SBody;
-}(Somebody));
-var s0 = new Somebody('小红0');
-var s1 = new SBody('小红1');
-var rival = new Somebody('小明');
-s0.hit(rival);
-s1.hit(rival);
+    haha.prototype.doSomeing1 = function () {
+        // doSomeing1
+        console.log('doSomeing1');
+    };
+    haha.prototype.doSomeing2 = function () {
+        // doSomeing2
+        console.log('doSomeing2');
+    };
+    __decorate([
+        autoLog
+    ], haha.prototype, "doSomeing1");
+    __decorate([
+        autoLog
+    ], haha.prototype, "doSomeing2");
+    return haha;
+}());
+var h = new haha();
+h.doSomeing1();

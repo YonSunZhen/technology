@@ -18,3 +18,43 @@ console.log(iterator.next()); // { value: 1, done: false }
 console.log(iterator.next()); // { value: 2, done: false }
 console.log(iterator.next()); // { value: 3, done: false }
 console.log(iterator.next()); // { value: undefined, done: true }
+
+// 输入和输出-迭代消息传递 
+function *foo(x) {
+  const y = x * (yield);
+  return y;
+}
+const it = foo(6);
+it.next(); // 第一个next(...)总是启动一个生成器 并运行到第一个yield处 不可省略 next(...)里面的参数会被忽略
+const res = it.next(7); // next(...)的数量总是比yield的多一个
+console.log(res); // 42
+
+// 输入和输出-消息是双向传递的
+function *foo(x) {
+  const y = x * (yield "Hello");
+  return y;
+}
+const it = foo(6);
+let res = it.next();
+console.log(res.value); // Hello
+res = it.next(7);
+console.log(res.value); // 42
+
+// 多个迭代器
+function *foo() {
+  const x = yield 2;
+  z++;
+  const y = yield(x * z);
+  console.log(x, y, z);
+}
+var z = 1;
+const it1 = foo();
+const it2 = foo();
+let val1 = it1.next().value; // 2
+let val2 = it2.next().value; // 2
+val1 = it1.next(val2 * 10).value; // 40 这里得到第二个yield发出的值 x*z=20*2
+val2 = it2.next(val1 * 5).value; // 600 这里得到第二个yield发出的值 x*z=200*3
+it1.next(val2 / 2); // 20 300 3
+it2.next(val1 / 4); // 200 10 3
+console.log(val1, val2);
+
