@@ -42,6 +42,7 @@ var Person = /** @class */ (function () {
     Person.prototype.sayHello = function () {
         console.log("hello");
     };
+    // 重写sayHello这个方法
     __decorate([
         methodDeractor("hello world")
     ], Person.prototype, "sayHello", null);

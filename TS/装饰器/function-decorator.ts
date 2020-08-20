@@ -16,5 +16,25 @@ class Person{
   }
 }
 
+
+
 let a = new Person();
 a.sayHello(); //hello hello world
+
+
+function autoLog (func: any) {
+  return function () {
+    console.log(`start ${func.name}`)
+    func()
+    console.log(`end ${func.name}`)
+  }
+}
+function doSomething1 () {
+  console.log('这里是调试1');
+}
+
+function doSomething2 () {
+  console.log('这里是调试2');
+}
+
+autoLog(doSomething1)();
