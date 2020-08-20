@@ -88,28 +88,28 @@ class Human1 {
   }
 }
 
-class Human2 {
-  @Inject() 
-  public clothes: Clothes;
-  public name: string;
-  constructor(name: string) {
-    this.clothes = this.clothes;
-    this.name = name;
-  }
-  update(name: string) {
-    this.clothes.updateName(name);
-  }
-}
+// class Human2 {
+//   @Inject() 
+//   public clothes: Clothes;
+//   public name: string;
+//   constructor(name: string) {
+//     this.clothes = this.clothes;
+//     this.name = name;
+//   }
+//   update(name: string) {
+//     this.clothes.updateName(name);
+//   }
+// }
 
-class Human3 {
-  @Inject() 
-  public clothes: Clothes;
-  public name: string;
-  constructor(name: string) {
-    this.clothes = this.clothes;
-    this.name = name;
-  }
-}
+// class Human3 {
+//   @Inject() 
+//   public clothes: Clothes;
+//   public name: string;
+//   constructor(name: string) {
+//     this.clothes = this.clothes;
+//     this.name = name;
+//   }
+// }
 
 // 总结
 // 单例：用于数据状态的维护(一个变 所有变)
@@ -117,9 +117,9 @@ const pepe1 = new Human1('syz');
 console.log(pepe1);
 pepe1.update('耐克');
 
-const pepe2 = new Human2('syc');
-console.log(pepe2);
-const pepe3 = new Human1('syt');
-console.log(pepe3);
-pepe2.update('阿迪达斯')
+// const pepe2 = new Human2('syc');
+// console.log(pepe2);
+// const pepe3 = new Human1('syt');
+// console.log(pepe3);
+// pepe2.update('阿迪达斯')
 
