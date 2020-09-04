@@ -6,8 +6,8 @@
 function classDecorator<T extends {new(...args:any[]):{}}>(constructor:T) {
   console.log('装饰器已执行');
   return class extends constructor {
-      newProperty = "new property";
-      hello = "override";
+    newProperty = "new property";
+    hello = "override";
   }
 }
 @classDecorator
@@ -19,9 +19,8 @@ class Greeter {
       console.log(this.hello); 
   }
 }
-setTimeout(() => {
-  console.log(new Greeter("world"));
-}, 1000)
+console.log(new Greeter("world"));
+// 装饰器已执行
 // world
 // Greeter {
 //   property: 'property',
@@ -30,9 +29,9 @@ setTimeout(() => {
 // }
 
 
+
 // 装饰类中的方法
 function cheating(target: any) {
-
   target.prototype.hit = function(rival: Somebody) {
     const hitDamage: number = 100;
     console.log(`${this.name}对${rival.name}造成一次伤害: ${hitDamage}`);
@@ -42,11 +41,9 @@ function cheating(target: any) {
 class Somebody {
   speed: number = 10;
   name: string;
-
   constructor(name: string) {
     this.name = name;
   }
-
   hit(rival: Somebody) {
     const hitDamage: number = 10;
     console.log(`${this.name}对${rival.name}造成一次伤害：${hitDamage}`);
