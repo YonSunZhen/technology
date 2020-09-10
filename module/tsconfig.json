@@ -3,7 +3,7 @@
   "buildOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
-    "module": "commonjs",
+    "module": "commonjs", // 当换成ES6则运行报错
     "moduleResolution": "node",
     "target": "ES6",
     "emitDecoratorMetadata": true,
@@ -15,5 +15,5 @@
     "inlineSourceMap": true,
     "noEmitHelpers": false,
     "declaration": true,
-  },
+  }
 }
