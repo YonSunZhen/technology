@@ -1,13 +1,8 @@
-// 若对 module.exports 重新赋值就切断了原来 exports 与 module.exports 之间的联系
-module.exports = 666;
-module.exports = {
-  a: 777
-};
+const a = require("./commonjs_a");
+console.log(`b模块已接收数据:aNum=${a.aNum},aArr=${a.aArr},aObj=${a.aObj.name}`);
 setTimeout(() => {
-  module.exports.a = 888;
-  console.log('这里是调试3');
-  console.log(module.exports);
-}, 1000);
-console.log('这里是调试2');
-console.log(module);
-console.log(exports);
+  console.log(`2s b模块接受数据:aNum=${a.aNum},aArr=${a.aArr},aObj=${a.aObj.name}`);
+  a.aNum = 2;
+  a.aArr = [2]
+  console.log(`2s b模块改变数据:aNum=${a.aNum},aArr=${a.aArr}`);
+}, 2000)
