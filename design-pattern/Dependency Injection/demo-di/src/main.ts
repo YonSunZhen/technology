@@ -40,7 +40,7 @@ export function Injectable(): (_constructor: any) => any {
 // 将依赖注入到生产者
 export function Inject(): (_constructor: any, propertyName: string) => any {
   return function (_constructor: any, propertyName: string): any {
-    // 获取属性的类型
+    // 获取属性定义时的类型
     const  propertyType: any = Reflect.getMetadata('design:type', _constructor, propertyName);
     const injector: Injector = rootInjector;
     let providerInsntance = injector.getInstance(propertyType); 
@@ -55,7 +55,7 @@ export function Inject(): (_constructor: any, propertyName: string) => any {
 
 @Injectable()
 class Cloth {
-  public name: string = '麻布';
+  name: string = '麻布';
 }
 
 @Injectable()
@@ -64,8 +64,8 @@ class Clothes {
   // 将类Cloth注入到类Clothes中的构造函数中???
   // 所以这样会直接修改到Clothes类的内部逻辑?
   @Inject() 
-  public cloth: Cloth;
-  public clotheName: string;
+  private cloth: Cloth;
+  private clotheName: string;
   constructor() {
     this.cloth = this.cloth;
     this.clotheName = this.clotheName;
@@ -77,8 +77,8 @@ class Clothes {
 
 class Human1 {
   @Inject() 
-  public clothes: Clothes;
-  public name: string;
+  private clothes: Clothes;
+  private name: string;
   constructor(name: string) {
     this.clothes = this.clothes;
     this.name = name;
@@ -116,6 +116,8 @@ class Human1 {
 const pepe1 = new Human1('syz');
 console.log(pepe1);
 pepe1.update('耐克');
+console.log();
+
 
 // const pepe2 = new Human2('syc');
 // console.log(pepe2);
