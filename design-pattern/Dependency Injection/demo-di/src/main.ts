@@ -43,7 +43,7 @@ export function Inject(): (_constructor: any, propertyName: string) => any {
     // 获取属性定义时的类型
     const  propertyType: any = Reflect.getMetadata('design:type', _constructor, propertyName);
     const injector: Injector = rootInjector;
-    let providerInsntance = injector.getInstance(propertyType); 
+    let providerInsntance = injector.getInstance(propertyType);
     if (!providerInsntance) {
       const providerClass = injector.getProvider(propertyType);
       providerInsntance = new providerClass();
@@ -63,9 +63,9 @@ class Clothes {
   // 为类Clothes注入类Cloth 之后类Clothes就拥有了使用类Cloth的能力
   // 将类Cloth注入到类Clothes中的构造函数中???
   // 所以这样会直接修改到Clothes类的内部逻辑?
-  @Inject() 
-  private cloth: Cloth;
-  private clotheName: string;
+  @Inject()
+  cloth: Cloth;
+  clotheName: string;
   constructor() {
     this.cloth = this.cloth;
     this.clotheName = this.clotheName;
@@ -77,8 +77,8 @@ class Clothes {
 
 class Human1 {
   @Inject() 
-  private clothes: Clothes;
-  private name: string;
+  clothes: Clothes;
+  name: string;
   constructor(name: string) {
     this.clothes = this.clothes;
     this.name = name;
@@ -115,9 +115,14 @@ class Human1 {
 // 单例：用于数据状态的维护(一个变 所有变)
 const pepe1 = new Human1('syz');
 console.log(pepe1);
+// Human1 {
+//   clothes: Clothes { cloth: Cloth { name: '麻布' }, clotheName: undefined }
+// }
 pepe1.update('耐克');
-console.log();
-
+console.log(pepe1);
+// Human1 {
+//   clothes: Clothes { cloth: Cloth { name: '麻布' }, clotheName: '耐克' }
+// }
 
 // const pepe2 = new Human2('syc');
 // console.log(pepe2);

@@ -12,6 +12,7 @@ const moduleInstances: Map<any, any> = new Map();
 // 装饰器
 export function Injectable(): ClassDecorator {
   return (target) => {
+    // 为 service 类添加元数据 design:paramtypes
     Reflect.defineMetadata('design:paramtypes', Reflect.getMetadata('design:paramtypes', target) || [], target);
   };
 }
@@ -19,15 +20,17 @@ export function Injectable(): ClassDecorator {
 // 装饰器
 export function Module(options: { imports?: Array<any>, providers?: Array<any> }): ClassDecorator {
   return (target) => {
+    // 为 Module 类添加元数据 DI_IMPORTS_SYMBOL || DI_PROVIDERS_SYMBOL
     Reflect.defineMetadata(DI_IMPORTS_SYMBOL, new Set(options.imports || []), target);
     Reflect.defineMetadata(DI_PROVIDERS_SYMBOL, new Set(options.providers || []), target);
   }
 }
 
-// 命名空间的作用是维护自己的一个空间 里面的方法名都是唯一的 但是不同命名空间可以存在同名的方法名
+// 命名空间的作用是维护自己的一个空间 里面的方法名都是唯一的 但是不同命名空间可以存在相同的方法名
 export namespace Factory {
 
   export function create(module: Type) {
+    // 获取到Module中的元数据
     const imports: Set<Type> = Reflect.getMetadata(DI_IMPORTS_SYMBOL, module);
     const providers: Set<any> = Reflect.getMetadata(DI_PROVIDERS_SYMBOL, module);
     const providersMap = new Map();
@@ -35,6 +38,7 @@ export namespace Factory {
     const importModules = Array.from(imports).map((importModule) => {
       let moduleInstance: ModuleInstance = moduleInstances.get(importModule);
       if(!moduleInstance) {
+        // 递归 递归函数的执行顺序是怎样的呢
         moduleInstance = create(importModule);
         moduleInstances.set(importModule, moduleInstance);
       }

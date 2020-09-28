@@ -6,6 +6,7 @@ import { SomeService } from "../some/some.service";
 export class HelloService {
 
   constructor(
+      // 为什么这样就能注入
       private readonly someService: SomeService,
       private readonly wordService: WordService) {
 
