@@ -23,6 +23,8 @@ export function Module(options: { imports?: Array<any>, providers?: Array<any> }
     // 为 Module 类添加元数据 DI_IMPORTS_SYMBOL || DI_PROVIDERS_SYMBOL
     Reflect.defineMetadata(DI_IMPORTS_SYMBOL, new Set(options.imports || []), target);
     Reflect.defineMetadata(DI_PROVIDERS_SYMBOL, new Set(options.providers || []), target);
+
+    
   }
 }
 
@@ -33,8 +35,7 @@ export namespace Factory {
     // 获取到Module中的元数据
     const imports: Set<Type> = Reflect.getMetadata(DI_IMPORTS_SYMBOL, module);
     const providers: Set<any> = Reflect.getMetadata(DI_PROVIDERS_SYMBOL, module);
-    const providersMap = new Map();
-
+    const providersMap = new Map(); 
     const importModules = Array.from(imports).map((importModule) => {
       let moduleInstance: ModuleInstance = moduleInstances.get(importModule);
       if(!moduleInstance) {
@@ -58,7 +59,7 @@ export namespace Factory {
     if(providerInstance) {
       return providerInstance;
     }
-
+    
     const deps: Array<any> = Reflect.getMetadata('design:paramtypes', provider);
     if(!deps) {
       throw new Error(`No provider named ${ provider.name }, do yout add @Injectable() to this provider?`);
@@ -81,6 +82,7 @@ export namespace Factory {
       }
       return depInstance;
     });
+    // 实例化服务并存放在moduleInstance中 好像这里是关键
     providerInstance = new provider(...args);
     moduleInstance.providers.set(provider, providerInstance);
     return providerInstance;
