@@ -1,9 +1,16 @@
+// http://www.semlinker.com/ioc-and-di/#%E5%85%AD%E3%80%81%E6%89%8B%E5%86%99-IoC-%E5%AE%B9%E5%99%A8
+
 import { 
   Token, Provider,
   isClassProvider, InjectionToken, isValueProvider,
   ClassProvider, ValueProvider, FactoryProvider
 } from './provider';
 import { isInjectable } from './Injectable';
+import { Type } from './type';
+import { getInjectionToken } from './Inject';
+
+type InjectableParam = Type<any>;
+const REFLECT_PARAMS = 'design:paramtypes';
 
 
 export class Container {
@@ -22,18 +29,15 @@ export class Container {
       provider = { provide: type, useClass: type };
       this.assertInjectableIfClassProvider(provider);
     }
-    
+    return this.injectWithProvider(type, provider);
   }
 
   private assertInjectableIfClassProvider<T>(provider: Provider<T>) {
     if(isClassProvider(provider) && !isInjectable(provider.useClass)) {
       throw new Error(
-        `Cannot provide ${this.getTokenName(
-          provider.provide
-     )} using class ${this.getTokenName(
-          provider.useClass
-     )}, ${this.getTokenName(provider.useClass)} isn't injectable`
-   );
+        `Cannot provide ${this.getTokenName(provider.provide)} using class ${this.getTokenName(provider.useClass )}, 
+        ${this.getTokenName(provider.useClass)} isn't injectable`
+      );
     }
   }
 
@@ -56,7 +60,10 @@ export class Container {
 
   // 关键 在实例化服务类时 需要构造该服务类依赖的独享(即在构造函数中注入的依赖)
   private injectClass<T>(classProvider: ClassProvider<T>): T {
-    return classProvider.useClass();
+    const target = classProvider.useClass;
+    const params = this.getInjectedParams(target);
+    // ??? 这里的作用
+    return Reflect.construct(target, params);
   }
 
   private injectValue<T>(valueProvider: ValueProvider<T>): T {
@@ -65,6 +72,27 @@ export class Container {
 
   private injectFactory<T>(factoryProvider: FactoryProvider<T>): T {
     return factoryProvider.useFactory();
+  }
+
+  // 用于获取类构造函数中声明的依赖对象
+  private getInjectedParams<T>(target: Type<T>) {
+    // 获取参数的类型
+    const argTypes = Reflect.getMetadata(REFLECT_PARAMS, target) as (InjectableParam | undefined)[];
+    if(argTypes === undefined) {
+      return [];
+    }
+    return argTypes.map((argTypes, index) => {
+      if(argTypes === undefined) {
+        throw new Error (
+          `Injection error. Recursive dependency detected in constructor for type ${target.name} with parameter at index ${index}`
+        );
+      }
+      const overrideToken = getInjectionToken(target, index);
+      const actualToken = overrideToken === undefined ? argTypes : overrideToken;
+      let provider = this.providers.get(actualToken);
+      // 递归调用 一层接一层
+      return this.injectWithProvider(actualToken, provider);
+    });
   }
 
 }

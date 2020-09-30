@@ -14,3 +14,7 @@ export function Inject(token: Token<any>) {
     return target;
   };
 }
+
+export function getInjectionToken(target: any, index: number) {
+  return Reflect.getMetadata(INJECT_METADATA_KEY, target, `index-${index}`) as Token<any> | undefined;
+}
