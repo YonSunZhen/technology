@@ -15,6 +15,7 @@ class HttpClient{
 @Injectable()
 class HttpService {
   constructor(
+    // 使用这种方式是如何将HttpClient注入的 使用Reflect.getMetadata('design:paramtypes', target)获取target类的参数类型信息
     private httpClient: HttpClient,
     @Inject(API_URL) private apiUrl: string
   ) { }

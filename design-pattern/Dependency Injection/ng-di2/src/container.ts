@@ -35,7 +35,7 @@ export class Container {
   private assertInjectableIfClassProvider<T>(provider: Provider<T>) {
     if(isClassProvider(provider) && !isInjectable(provider.useClass)) {
       throw new Error(
-        `Cannot provide ${this.getTokenName(provider.provide)} using class ${this.getTokenName(provider.useClass )}, 
+        `Cannot provide ${this.getTokenName(provider.provide)} using class ${this.getTokenName( provider.useClass )}, 
         ${this.getTokenName(provider.useClass)} isn't injectable`
       );
     }
@@ -74,9 +74,9 @@ export class Container {
     return factoryProvider.useFactory();
   }
 
-  // 用于获取类构造函数中声明的依赖对象
+  // 用于获取类构造函数中声明的依赖对象 重点&难点
   private getInjectedParams<T>(target: Type<T>) {
-    // 获取参数的类型
+    // 获取参数的类型 "design:paramtypes" 用于修饰目标对象方法的参数类型
     const argTypes = Reflect.getMetadata(REFLECT_PARAMS, target) as (InjectableParam | undefined)[];
     if(argTypes === undefined) {
       return [];
