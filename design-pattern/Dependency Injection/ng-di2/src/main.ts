@@ -35,4 +35,4 @@ container.addProvider({provide: HttpService, useClass: HttpService });
 container.addProvider({provide: HttpClient, useClass: HttpClient });
 
 const httpService = container.inject(HttpService);
-httpService.test();
+httpService.;

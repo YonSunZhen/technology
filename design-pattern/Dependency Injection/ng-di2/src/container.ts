@@ -22,8 +22,12 @@ export class Container {
     this.providers.set(provider.provide, provider);
   }
 
-  inject<T>(type: Token<T>): T {
+  inject<T>(type: Token<T>): T {    
     let provider = this.providers.get(type);
+    console.log('这里是调试1');
+    console.log(type);
+    console.log(provider);
+    
     // 忘记将Class执行addProvider
     if(provider === undefined && !(type instanceof InjectionToken)) {
       provider = { provide: type, useClass: type };

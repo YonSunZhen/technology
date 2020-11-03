@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "net start", //debug调式标签名称
+      "type": "node", //调试类型
+      "request": "launch", //请求方式
+      "args": [
+          "${workspaceRoot}/src/main.ts" // 入口文件
+      ],
+      "runtimeArgs": [ 
+          "--nolazy",
+          "-r",
+          "ts-node/register"
+      ],
+      "sourceMaps": true,
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}
