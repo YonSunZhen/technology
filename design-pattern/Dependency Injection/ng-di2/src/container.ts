@@ -24,10 +24,6 @@ export class Container {
 
   inject<T>(type: Token<T>): T {    
     let provider = this.providers.get(type);
-    console.log('这里是调试1');
-    console.log(type);
-    console.log(provider);
-    
     // 忘记将Class执行addProvider
     if(provider === undefined && !(type instanceof InjectionToken)) {
       provider = { provide: type, useClass: type };
@@ -66,7 +62,7 @@ export class Container {
   private injectClass<T>(classProvider: ClassProvider<T>): T {
     const target = classProvider.useClass;
     const params = this.getInjectedParams(target);
-    // ??? 这里的作用
+    // 这里的作用 类似于 new target(...params)
     return Reflect.construct(target, params);
   }
 
