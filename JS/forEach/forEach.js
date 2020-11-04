@@ -68,3 +68,11 @@ for(let i = 0; i < test.length; i++) {
   console.log(element);
 }
 
+// 在回调函数中修改源数组在遍历数组时会影响值的输出（内部使用浅拷贝）
+const arr = [1,2,3];
+arr.forEach((a, i) => {
+  if(i === 0) {
+    arr[1] = 20;
+  };
+  console.log(a);
+})

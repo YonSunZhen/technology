@@ -1,25 +1,25 @@
-Array.prototype.myReduce1 = function(callback, prev) {
-  for(let i = 0; i < this.length; i++) {
-    if(typeof prev === 'undefined') {
-      prev = callback(this[i], this[i + 1], i + 1, this);
-    } else {
-      prev = callback(prev, this[i], i, this);
-    }
-  }
-  return prev;
-};
+// Array.prototype.myReduce1 = function(callback, prev) {
+//   for(let i = 0; i < this.length; i++) {
+//     if(typeof prev === 'undefined') {
+//       prev = callback(this[i], this[i + 1], i + 1, this);
+//     } else {
+//       prev = callback(prev, this[i], i, this);
+//     }
+//   }
+//   return prev;
+// };
 
-let r1 = [1, 2, 3, 4].myReduce1(function (prevValue, currentValue, currentIndex, array) {
-  return prevValue + currentValue;
-}, 22);
+// let r1 = [1, 2, 3, 4].myReduce1(function (prevValue, currentValue, currentIndex, array) {
+//   return prevValue + currentValue;
+// }, 22);
 
-console.log(r1);
+// console.log(r1);
 
-let r2 = [1, 2, 3, 4].reduce(function (prevValue, currentValue, currentIndex, array) {
-  return prevValue + currentValue;
-}, 22);
+// let r2 = [1, 2, 3, 4].reduce(function (prevValue, currentValue, currentIndex, array) {
+//   return prevValue + currentValue;
+// }, 22);
 
-console.log(r2);
+// console.log(r2);
 
 Array.prototype.myReduce = function(callback, initialValue) {
   if(this === null) {
@@ -28,7 +28,8 @@ Array.prototype.myReduce = function(callback, initialValue) {
   if (typeof callback !== 'function') {
     throw new TypeError( callback + ' is not a function');
   }
-  const O = Object(this);
+  // const O = Object(this);
+  const O = JSON.parse(JSON.stringify(this));
   const lenValue = O.length;
   const len = lenValue >>> 0;
   if(len === 0 && !initialValue) {
@@ -58,7 +59,9 @@ Array.prototype.myReduce = function(callback, initialValue) {
   // 当accumulator=initialValue时 k=0
   // accumulator=数组的第一个有效元素时 k=1
   while(k < len) {
-    if(k in O) {;
+    if(k in O) {
+      console.log('这里是调试3');
+      console.log(O);
       accumulator = callback(accumulator, O[k], k, O);
     }
     k++;
@@ -66,23 +69,29 @@ Array.prototype.myReduce = function(callback, initialValue) {
   return accumulator;
 }
 
-let r3 = [1,2,3].myReduce(function (prevValue, currentValue, currentIndex, array) {
+const arr = [1,2,3];
+let r3 = arr.myReduce(function (prevValue, currentValue, currentIndex, array) {
+  if(currentIndex === 0) {
+    console.log('这里是调试2');
+    arr[1] = 20;
+  }
   return prevValue + currentValue;
 }, 22);
 
+console.log('这里是调试1');
 console.log(r3);
 
-console.log([].concat([1,2]));
+// console.log([].concat([1,2]));
 
-var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
+// var names = ['Alice', 'Bob', 'Tiff', 'Bruce', 'Alice'];
 
-var countedNames = names.reduce(function (allNames, name) { 
-  if (name in allNames) {
-    allNames[name]++;
-  }
-  else {
-    allNames[name] = 1;
-  }
-  return allNames;
-}, {});
-console.log(countedNames);
+// var countedNames = names.reduce(function (allNames, name) { 
+//   if (name in allNames) {
+//     allNames[name]++;
+//   }
+//   else {
+//     allNames[name] = 1;
+//   }
+//   return allNames;
+// }, {});
+// console.log(countedNames);
