@@ -7,6 +7,7 @@ const API_URL = new InjectionToken('apiUrl');
 
 @Injectable()
 class HttpClient{
+  http = 'http';
   get() {
     console.log('get');
   }
@@ -36,3 +37,6 @@ container.addProvider({provide: HttpClient, useClass: HttpClient });
 
 const httpService = container.inject(HttpService);
 httpService.test();
+
+
+

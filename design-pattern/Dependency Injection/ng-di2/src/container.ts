@@ -14,7 +14,9 @@ const REFLECT_PARAMS = 'design:paramtypes';
 
 
 export class Container {
-  private providers = new Map<Token<any>, Provider<any>>();
+
+  providers = new Map<Token<any>, Provider<any>>();
+  instances = new Map<Token<any>, any>();
 
   addProvider<T>(provider: Provider<T>) {
     this.assertInjectableIfClassProvider(provider);
@@ -22,15 +24,21 @@ export class Container {
     this.providers.set(provider.provide, provider);
   }
 
-  inject<T>(type: Token<T>): T {    
+
+  inject<T>(type: Token<T>): T {
     let provider = this.providers.get(type);
-    // 忘记将Class执行addProvider
+    let instance = this.instances.get(type);
     if(provider === undefined && !(type instanceof InjectionToken)) {
       provider = { provide: type, useClass: type };
       this.assertInjectableIfClassProvider(provider);
     }
+    // 容器中是否已存在实例 存在的话直接返回原有的实例 共享变量
+    if(instance) {
+      return instance;
+    }
     return this.injectWithProvider(type, provider);
   }
+
 
   private assertInjectableIfClassProvider<T>(provider: Provider<T>) {
     if(isClassProvider(provider) && !isInjectable(provider.useClass)) {
@@ -46,16 +54,19 @@ export class Container {
   } 
 
   private injectWithProvider<T>(type: Token<T>, provider?: Provider<T>): T {
+    let instance;
     if (provider === undefined) {
       throw new Error(`No provider for type ${this.getTokenName(type)}`);
     }
     if (isClassProvider(provider)) {
-      return this.injectClass(provider as ClassProvider<T>);
+      instance = this.injectClass(provider as ClassProvider<T>);
     } else if (isValueProvider(provider)) {
-      return this.injectValue(provider as ValueProvider<T>);
+      instance =  this.injectValue(provider as ValueProvider<T>);
     } else {
-      return this.injectFactory(provider as FactoryProvider<T>);
+      instance = this.injectFactory(provider as FactoryProvider<T>);
     }
+    this.addInstances(type, instance);
+    return instance;
   }
 
   // 关键 在实例化服务类时 需要构造该服务类依赖的独享(即在构造函数中注入的依赖)
@@ -93,6 +104,11 @@ export class Container {
       // 递归调用 一层接一层
       return this.injectWithProvider(actualToken, provider);
     });
+  }
+
+  // 已注入容器的实例添加到变量instances
+  private addInstances<T>(type: Token<T>, instance: any) {
+    this.instances.set(type, instance);
   }
 
 }
