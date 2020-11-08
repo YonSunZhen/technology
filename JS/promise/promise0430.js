@@ -33,6 +33,8 @@ promise.prototype.then = function (onFulfilled, onRejected) {
     if(that.status === that.fulfilled) {
       // x为这个方法return的值
       let x = onFulfilled(that.value);
+      console.log('这里是调试4');
+      console.log(x);
       // 验证then是否有return promise
       if(x && typeof x === 'object' || typeof x === 'function') {
         let then = x.then;
@@ -54,7 +56,7 @@ promise.prototype.then = function (onFulfilled, onRejected) {
             // 如果then存在 说明返回了一个promise 所以要等返回的promise resolve之后 这边才可以resolve 
             // 所以这里采用的方法是将resolve放在返回的promise的then里面执行 这样前面的resolve肯定就在最后面执行了 很牛皮
             let then = x.then;
-            if (then) {
+            if (then) { 
               // 这里有点神奇!!!
               then.call(x, resolve, reject);
             }
@@ -92,29 +94,29 @@ promise.prototype.then = function (onFulfilled, onRejected) {
   })
   return promise2;
 }
-const test = new promise((resolve, reject) => {
-  // resolve('666')
-  setTimeout(() => {
-    console.log('这里是调试1');
-    reject('error');
-  }, 2000);
-})
-test.then(
-  (data) => {
-    console.log(data);
+// const test = new promise((resolve, reject) => {
+//   resolve('666')
+//   setTimeout(() => {
+//     console.log('这里是调试1');
+//     reject('error');
+//   }, 2000);
+// })
+// test.then(
+//   (data) => {
+//     console.log(data);
     
-  },
-  (error) => {
-    return new promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log(error);
-        resolve();
-      }, 3000);
-    })
-  }
-).then(() => {
-  console.log('这里是调试2');
-})
+//   },
+//   (error) => {
+//     return new promise((resolve, reject) => {
+//       setTimeout(() => {
+//         console.log(error);
+//         resolve();
+//       }, 3000);
+//     })
+//   }
+// ).then(() => {
+//   console.log('这里是调试2');
+// })
 
 // const promise1 = new promise((resolve, reject) => {
 //   setTimeout(() => {
@@ -163,3 +165,24 @@ test.then(
 // }).then(() => {
 //   console.log('这里是调试4'); // 2
 // })
+
+// 这种情况怎么解释呢？ 这种方式就不属于链式调用了
+const test = new promise((res, rej) => {
+  setTimeout(() => {
+    console.log('这里是调试1');
+    res();
+  }, 4000);
+})
+// 返回一个promise
+test.then(() => {
+  return new promise((res1) => {
+    setTimeout(() => {
+      console.log('这里是调试2');
+      res1();
+    }, 3000);
+  })
+})
+// 这也返回了一个promise 两者没有任何联系
+test.then(() => {
+  console.log('这里是调试3');
+})
