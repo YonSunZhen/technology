@@ -9,12 +9,16 @@
 
 function *createInterator() {
   yield 1;
+  console.log('这里是调试1');
   yield 2;
   yield 3;
 }
 // 生成器的调用方式与普通函数相同,只不过返回一个迭代器
 let iterator = createInterator();
 console.log(iterator.next()); // { value: 1, done: false }
+setTimeout(() => {
+  console.log(iterator.next());
+}, 2000)
 console.log(iterator.next()); // { value: 2, done: false }
 console.log(iterator.next()); // { value: 3, done: false }
 console.log(iterator.next()); // { value: undefined, done: true }
@@ -25,6 +29,7 @@ function *foo(x) {
   return y;
 }
 const it = foo(6);
+// 启动生成器一定要用不带参数的next(...)
 it.next(); // 第一个next(...)总是启动一个生成器 并运行到第一个yield处 不可省略 next(...)里面的参数会被忽略
 const res = it.next(7); // next(...)的数量总是比yield的多一个
 console.log(res); // 42
