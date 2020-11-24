@@ -17,7 +17,7 @@ function *createInterator() {
 let iterator = createInterator();
 console.log(iterator.next()); // { value: 1, done: false }
 setTimeout(() => {
-  console.log(iterator.next());
+  console.log(iterator.throw());
 }, 2000)
 console.log(iterator.next()); // { value: 2, done: false }
 console.log(iterator.next()); // { value: 3, done: false }

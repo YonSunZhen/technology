@@ -181,3 +181,35 @@ test().then((data) => {
   console.log('这里是调试2');
   console.log(data);
 });
+
+
+
+// 在map中用async 使用Promise.all https://www.cnblogs.com/LULULI/p/10831523.html
+const arr = [
+  {name: 'syz', type: 1},
+  {name: 'haha', type: 2}
+]
+function promise() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('这里是调试1');
+      resolve(111);
+    }, 1000)
+  })
+}
+async function test() {
+  const data = await promise();
+  return data;
+}
+async function fun() {
+  const temp = await Promise.all(arr.map(async (a) => {
+    return {
+      type: await test()
+    }
+  }))
+  return temp;
+}
+fun().then((data) => {
+  console.log('这里是调试2');
+  console.log(data);
+});
