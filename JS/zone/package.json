@@ -1,0 +1,21 @@
+{
+  "name": "di",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node ./src/main.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "expect": "^26.6.2",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7",
+    "zone.js": "^0.11.3"
+  },
+  "devDependencies": {
+    "@types/zone.js": "^0.5.12"
+  }
+}
