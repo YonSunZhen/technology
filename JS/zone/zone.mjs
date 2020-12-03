@@ -1,38 +1,47 @@
 import 'zone.js';
-import expect from 'expect';
 
-// const rootZone = Zone.current;
-// const zoneA = rootZone.fork({name: 'A'});
 
-// expect(Zone.current).toBe(rootZone);
+let zone = Zone.current.fork({
+  // onInvoke: function(parentZoneDelegate, currentZone, targetZone, delegate, applyThis, applyArgs, source) {
+  //   console.log('执行onInvoke');
+  //   // 执行回调 没有此语句将不会执行回调
+  //   parentZoneDelegate.invoke(targetZone, delegate, applyThis, applyArgs, source);
+  //   console.log('离开onInvoke');
+  // }
 
-// setTimeout(function timeCb1() {
-//   console.log('这里是调试1');
-//   expect(Zone.current).toEqual(rootZone);
-// }, 2000);
+  // onInvokeTask(parentZoneDelegate, currentZone, targetZone, task) {
+  //   console.log('执行onInvokeTask');
+  //   // 执行异步任务中的回调 没有此语句将不会执行
+  //   parentZoneDelegate.invokeTask(targetZone, task);
+  // }
 
-// zoneA.run(function run1() {
-//   expect(Zone.current).toEqual(zoneA);
+  // onHasTask(parentZoneDelegate, currentZone, targetZone, hasTaskState) {
+  //   console.log('执行onHasTask');
+  //   if(!hasTaskState.macroTask) {
+  //     console.log('异步函数执行结束');
+  //   }
+  // }
 
-//   setTimeout(function timeoutCb2() {
-//     console.log('这里是调试2');
-//     expect(Zone.current).toEqual(zoneA);
-//   }, 1000);
-// });
+  // onScheduleTask(parentZoneDelegate, currentZone, targetZone, task) {
+  //   console.log('这里是调试2');
+  //   parentZoneDelegate.scheduleTask(targetZone, task);
+  // },
 
-// expect(Zone.current).toBe(rootZone);
-
-let logZone = Zone.current.fork({ 
-  name: 'logZone',
-  onInvoke: function(parentZoneDelegate, currentZone, targetZone, delegate, applyThis, applyArgs, source) {
-    console.log(targetZone.name, 'enter');
-    parentZoneDelegate.invoke(targetZone, delegate, applyThis, applyArgs, source)
-    console.log(targetZone.name, 'leave'); 
-  }
+  // onHandleError(parentZoneDelegate, currentZone, targetZone, error) {
+  //   console.log('这里是调试2');
+  // }
 });
 
-logZone.run(function myApp() {
-    console.log(Zone.current.name, 'queue promise');
-    Promise.resolve('OK').then((value) => {console.log(Zone.current.name, 'Promise', value)
-  });
-});
+zone.run(async);
+
+function async() {
+  console.log('执行回调');
+  console.log('这里是调试3');
+  setTimeout(() => {
+    console.log('这里是调试1');
+  }, 3000)
+  setTimeout(() => {
+    console.log('这里是调试2');
+  }, 6000)
+  console.log('这里是调试4');
+}
