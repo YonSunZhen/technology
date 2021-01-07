@@ -11,7 +11,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\二分查找\\index.js"
+      "program": "${workspaceFolder}\\快速排序\\index.js"
     }
   ]
 }
