@@ -17,14 +17,12 @@ class Layer {
 
 class Router {
   constructor(opts = {}) {
-    this.stack = []; // 存放各个注册路由的信息
+    // 存放各个注册路由的信息
+    this.stack = [];
   }
 
   register(path, methods, middleware, opts) {
-    console.log('debug2');
-    console.log(methods);
     let route = new Layer(path, methods, middleware, opts);
-    console.log(route);
     this.stack.push(route);
     return this;
   }
@@ -34,7 +32,6 @@ class Router {
     return async function(ctx, next) {
       let currentPath = ctx.path;
       let route;
-
       for(let i = 0; i < stock.length; i++) {
         let item = stock[i];
         if(currentPath === item.path && item.methods.indexOf(ctx.method) >= 0) {
@@ -44,21 +41,18 @@ class Router {
       }
 
       if(typeof route === 'function') {
+        // 触发接口业务逻辑执行
         route(ctx, next);
         return;
       }
-
       await next();
     };
   }
 }
 
-// 将各个http请求方法注册到Router
+// 将各个http请求方法注册到Router类
 methods.forEach(method => {
   Router.prototype[method.toLocaleLowerCase()] = Router.prototype[method] = function(path, middleware) {
-    console.log('debug1');
-    console.log(path);
-    console.log(middleware);
     this.register(path, [method], middleware);
   };
 });
