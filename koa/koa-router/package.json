@@ -1,0 +1,21 @@
+{
+  "name": "koa-router",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node example.js",
+    "dev": "./node_modules/.bin/nodemon example.js",
+    "fix": "./node_modules/.bin/eslint --fix --ext .js ./",
+    "precommit": "./node_modules/.bin/eslint --ext .jsx,.js ./",
+    "prepush": "./node_modules/.bin/eslint --ext .jsx,.js ./"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3"
+  }
+}
