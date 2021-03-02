@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://lib.baomitu.com/jquery/3.5.1/jquery.js"></script>
+</head>
+<body>
+  <script>
+    // 原生写法
+    // function jsonp(req){
+    //   var script = document.createElement('script');
+    //   var url = req.url + '?callback=' + req.callback.name;
+    //   script.src = url;
+    //   document.getElementsByTagName('head')[0].appendChild(script); 
+    // }
+
+    // function hello(res){
+    //   console.log('hello ' + res.data);
+    // }
+    // jsonp({
+    //   url : 'http://localhost:8080/',
+    //   callback : hello
+    // });
+
+    // jquery ajax写法
+    $.ajax({
+      url: 'http://localhost:8080/',
+      type: 'GET',
+      dataType: 'jsonp',
+      success: (res) => {
+        console.log(res);
+      }
+    })
+  </script>
+
+
+</body>
+</html>
