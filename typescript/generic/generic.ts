@@ -3,6 +3,63 @@ type User = {
   age?: number;
 };
 
+// https://segmentfault.com/a/1190000023943952
+// & 运算符 将多个类型合并为一个类型
+type PartialPointX = { x: number; };
+type Point = PartialPointX & { y: number; };
+let point: Point = {
+  x: 1
+}
+
+// 同名基础类型属性的合并
+interface X {
+  c: string;
+  d: string;
+}
+
+interface Y {
+  c: number;
+  e: string
+}
+
+type XY = X & Y;
+type YX = Y & X;
+
+let p: XY;
+let q: YX;
+
+p = { c: 6, d: "d", e: "e" };
+q = { c: 6, d: "d", e: "e" };
+// 这是因为混入后成员 c 的类型为 string & number，即成员 c 的类型既可以是 string 类型又可以是 number 类型。很明显这种类型是不存在的，所以混入后成员 c 的类型为 never
+
+// 同名非基础类型属性的合并
+interface D { d: boolean; }
+interface E { e: string; }
+interface F { f: number; }
+
+interface A { x: D; }
+interface B { x: E; }
+interface C { x: F; }
+
+type ABC = A & B & C;
+
+let abc: ABC = {
+  x: {
+    d: true,
+    e: 'semlinker',
+    f: 666
+  }
+};
+// 在混入多个类型时，若存在相同的成员，且成员类型为非基本数据类型，那么是可以成功合并
+
+
+// | 分隔符 表示取值可以为多种类型中的一种
+const sayHello = (name: string | undefined) => { /* ... */ };
+
+sayHello("semlinker");
+sayHello(undefined);
+
+
 // keyof 关键字
 type TA = keyof User;
 const ta: TA = 'name'; // 实例必须是类型属性其中的一个
