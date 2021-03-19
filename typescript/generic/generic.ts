@@ -109,8 +109,29 @@ type MyMutable<T> = {
 }
 type MutableUser = MyMutable<User>;
 
-// Record<K, T> 得到一个由K中每个值作为键，值类型为T的新的Object类型
+// Record<K, T> 得到一个由K中每个值作为键，值类型为T的新的Object类型 很牛皮 通俗点讲就是将原来定义的字段类型改写
+type petsGroup = 'dog' | 'cat' | 'fish';
+interface IPetInfo {
+    name:string,
+    age:number,
+}
 
+type IPets = Record<petsGroup, IPetInfo>;
+
+const animalsInfo:IPets = {
+    dog:{
+        name:'dogName',
+        age:2
+    },
+    cat:{
+        name:'catName',
+        age:3
+    },
+    fish:{
+        name:'fishName',
+        age:5
+    }
+}
 
 
 
