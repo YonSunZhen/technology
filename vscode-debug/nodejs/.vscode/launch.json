@@ -1,0 +1,21 @@
+{
+  // 使用 IntelliSense 了解相关属性。 
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "pwa-node",
+      "request": "launch",
+      "name": "debug",
+      "cwd": "${workspaceFolder}", // 用于设置当前调试文件的根路径 默认为${workspaceFolder}
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js", // 调试时不进入node_modules中的程序
+        "<node_internals>/**", // 跳过内部node模块程序
+      ],
+      // "program": "debug.js", // 启动程序入口文件 必须使用绝对路径
+      "runtimeExecutable": "npm", // 执行package.json中定义的script
+      "runtimeArgs": ["run-script", "debug"], // 执行package.json中定义的script
+    }
+  ]
+}
