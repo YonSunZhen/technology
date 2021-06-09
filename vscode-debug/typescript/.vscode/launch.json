@@ -1,0 +1,39 @@
+// {
+//   "version": "0.2.0",
+//   "configurations": [
+//     {
+//       "type": "pwa-node",
+//       "request": "launch",
+//       "name": "debug ts",
+//       "skipFiles": [
+//         "<node_internals>/**"
+//       ],
+//       "program": "${workspaceFolder}/debug.ts",
+//       "preLaunchTask": "tsc: build", // 这里要跟tasks.json中的label对应起来
+//     }
+//   ]
+// }
+
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ts-node",
+      "type": "node",
+      "request": "launch",
+      "args": [
+        "${relativeFile}"
+      ],
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register",
+        "-r",
+        "tsconfig-paths/register"
+      ],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "program": "${workspaceFolder}/debug.ts",
+      "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}
