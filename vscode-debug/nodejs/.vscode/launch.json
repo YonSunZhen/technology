@@ -7,7 +7,7 @@
     {
       "type": "pwa-node",
       "request": "launch",
-      "name": "debug",
+      "name": "debug nodejs",
       "cwd": "${workspaceFolder}", // 用于设置当前调试文件的根路径 默认为${workspaceFolder}
       "skipFiles": [
         "${workspaceFolder}/node_modules/**/*.js", // 调试时不进入node_modules中的程序
