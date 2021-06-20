@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "debug ng", // 自定义名称
+      "url": "http://localhost:4200", // 项目启动地址
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js", // 调试时不进入node_modules中的程序
+        "<node_internals>/**", // 跳过内部node模块程序
+      ]
+    }
+  ]
+}
