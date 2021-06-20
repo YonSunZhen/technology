@@ -1,0 +1,1 @@
+export const config = 'this is my config';

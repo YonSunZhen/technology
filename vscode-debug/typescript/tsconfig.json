@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "es5",                               
     "module": "commonjs",
-    "outDir": "out",
-    "sourceMap": true
+    "esModuleInterop": true, // 使用es module导入时使用的
+    "baseUrl": "./",
+    "paths": {
+      "@config": ["config"]
+    }
   }
 }
