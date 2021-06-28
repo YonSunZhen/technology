@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "debug python",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/debug.py", // 调试的程序
+      "console": "integratedTerminal"
+    }
+  ]
+}
