@@ -1,0 +1,12 @@
+{
+  "name": "API 文档",
+  "version": "1.0.0",
+  "title": "API",
+  "url": "http://xx.xxx.xxx.xxx/api/v1/test",
+  "sampleUrl": "http://xx.xxx.xxx.xxx/api/v1/test",
+  "forceLanguage": "zh-cn",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

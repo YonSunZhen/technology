@@ -1,0 +1,31 @@
+stages:
+  - docker-build
+  - docker-publish
+
+docker-build:
+  stage: docker-build
+  image: xx.xxx.xxx.xx:8888/gitlab/dind
+  only:
+    - master
+  before_script:
+    - export DATE_NOW=$(date +%Y-%m-%d)
+    - echo "Build for $DATE_NOW"
+    - docker login xx.xxx.xxx.xx:8888 --username $CI_DOCKER_USERNAME --password $CI_DOCKER_PASSWORD
+  script:
+    - docker build -t xx.xxx.xxx.xx:9999/hololens/ms-vorg-lens .
+    - docker tag xx.xxx.xxx.xx:9999/hololens/ms-vorg-lens xx.xxx.xxx.xx:9999/hololens/ms-vorg-lens:$DATE_NOW
+  after_script:
+  - docker logout xx.xxx.xxx.xx:8888
+
+docker-publish:
+  stage: docker-publish
+  image: xx.xxx.xxx.xx:8888/gitlab/dind
+  only:
+    - master
+  before_script:
+    - docker login xx.xxx.xxx.xx:9999 --username $CI_DOCKER_USERNAME --password $CI_DOCKER_PASSWORD
+  script:
+    - docker push xx.xxx.xxx.xx:9999/hololens/ms-vorg-lens
+  after_script:
+    - docker logout xx.xxx.xxx.xx:9999
+

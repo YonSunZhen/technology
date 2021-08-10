@@ -1,0 +1,10 @@
+{
+  "db": {
+    "host": "xx.xxx.xxx.xxx",
+    "port": 3306,
+    "user": "root",
+    "password": "",
+    "database": "koa_server"
+  },
+  "upstream": {}
+}

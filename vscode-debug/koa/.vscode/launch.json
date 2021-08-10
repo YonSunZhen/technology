@@ -1,0 +1,30 @@
+{
+  // 使用 IntelliSense 了解相关属性。 
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+        "name": "ts-node", // 自定义名称
+        "type": "node", // 内置特定执行器
+        "request": "launch",
+        "env": {
+          // "NODE_ENV": "test", // 设置node环境变量 process.env.NODE_ENV 可以获取到这个值
+        },
+        "runtimeArgs": [
+          "-r",
+          "ts-node/register", // 加载模块 ts-node/register
+          "-r",
+          "tsconfig-paths/register" // 加载模块 tsconfig-paths/register
+        ],
+        "skipFiles": [
+          "${workspaceFolder}/node_modules/**/*.js", // 调试时跳过node_modules中的程序 必须使用绝对路径
+          "<node_internals>/**", // 跳过内部node模块程序
+        ],
+        "cwd": "${workspaceFolder}", // 对应runtimeArgs中找的模块的路径
+        "protocol": "inspector",
+        "program": "./src/main.ts", // 拼接在cwd的路径后面或者使用绝对路径
+        "internalConsoleOptions": "openOnSessionStart"
+    }
+  ]
+}
