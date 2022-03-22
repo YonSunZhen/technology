@@ -242,3 +242,19 @@ function resolvePromise (promise2, x, resolve, reject) {
 // }).then(() => {
 //   console.log('这里是调试4'); // 2
 // })
+
+function test() {
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      console.log('debug1')
+      res('haha')
+    },3000)
+  })
+}
+
+
+(async () => {
+  const a = await test()
+  console.log(a);
+  console.log('debug2')
+})();
